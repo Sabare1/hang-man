@@ -18,7 +18,7 @@ export default function App(){
 
   const alphabets = "abcdefghijklmnopqrstuvwxyz";
   const buttons = alphabets.split('').map((char) => (
-    <button>{char}</button>
+    <button className='key-btn'>{char.toUpperCase()}</button>
   ))
 
   return(
@@ -40,6 +40,7 @@ export default function App(){
       <section className='keyboard-container'>
         {buttons}
       </section>
+      <button className='new-game'>New Game</button>
     </main>
   )
 }
