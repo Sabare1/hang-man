@@ -1,25 +1,44 @@
 import './App.css'
 import {languages} from './languages'
 import { useState } from 'react'
+import {clsx} from 'clsx'
 export default function App(){
   const [word, setWord] = useState("react");
+  const [guessWord, setGuessWord] = useState([]);
 
+  const wrongGuessCount = guessWord.filter((letter) => (
+    !word.includes(letter)
+  )).length;
+  
   const charElems = word.split('').map((char) => (
-    <span>{char.toUpperCase()}</span>
+    <span>{guessWord.includes(char) ? char.toUpperCase() : ""}</span>
   ))
 
   const langElems = languages.map((language) => {
+    const className = clsx({lost: languages.indexOf(language) < wrongGuessCount})
     const style = {
       backgroundColor:language.backgroundColor,
       color: language.color
     }
-    return (<h2 style={style}>{language.name}</h2>)
+    return (<h2 style={style} className={className}>{language.name}</h2>)
   })
+
+  function addGuess(letter){
+    setGuessWord((prevGuessWord) => (
+      prevGuessWord.includes(letter) ? prevGuessWord : [...prevGuessWord, letter]
+    ))
+  }
 
   const alphabets = "abcdefghijklmnopqrstuvwxyz";
   const buttons = alphabets.split('').map((char) => (
-    <button className='key-btn'>{char.toUpperCase()}</button>
+    <button  
+    onClick={() => addGuess(char)}
+    className = {clsx({right:(word.includes(char) && guessWord.includes(char)), 
+    wrong:(guessWord.includes(char) && !word.includes(char))})}>
+      {char.toUpperCase()}
+    </button>
   ))
+  
 
   return(
     <main className='main-container'>

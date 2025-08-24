@@ -59,6 +59,21 @@ section > p{
   font-size: 0.9rem;
   border-radius: 3px;
   margin-block: 2px;
+  position: relative;
+}
+
+.language-container > h2.lost::before{
+  content: "☠️";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  font-size: 0.85rem;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .word-container{
@@ -91,7 +106,7 @@ section > p{
   margin-top: 30px;
 }
 
-.key-btn{
+.keyboard-container > button{
   background-color: #FCBA29;
   border: 1px solid #ded5d5;
   height: 40px;
@@ -101,6 +116,14 @@ section > p{
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+button.right{
+  background-color: #10A95B;
+}
+
+button.wrong{
+  background-color: #EC5D49;
 }
 
 .new-game{
