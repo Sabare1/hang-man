@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  row-gap: 10px;
+  min-height: 729px;
   height: 100vh;
   width: 700px;
   background-color: rgba(0, 0, 0, 0.659);
@@ -12,7 +12,12 @@
 }
 
 header{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   text-align: center;
+  min-height: 190px;
+  min-width: 400px;
 }
 
 header > h1{
@@ -27,15 +32,35 @@ header > p{
 
 section.game-status{
   text-align: center;
-  background-color: rgb(74, 158, 74);
-  padding: 10px 150px;
+  align-content: center;
+  height: 100px;
+  width: 400px;
   border-radius: 5px;
   margin-top: 15px;
 }
 
-section > h1{
+section.game-status.won{
+  background-color: rgb(74, 158, 74);
+}
+
+section.game-status.lost{
+  background-color: #BA2A2A;
+}
+
+section.game-status.wrong-guess{
+  background-color: #7A5EA7;
+}
+
+section.game-status.wrong-guess > h2{
+  margin: 0;
+  font-size: 1.1em;
+  font-style: italic;
+  font-weight: 400;
+}
+
+section > h2{
   font-size: 1.25rem;
-  margin-top: 0;
+  margin: 0;
   margin-bottom: 10px;
 }
 
@@ -104,6 +129,11 @@ section > p{
   gap: 7px;
   max-width: 465px;
   margin-top: 30px;
+}
+
+.foot-container{
+  min-height: 250px;
+  text-align: center;
 }
 
 .keyboard-container > button{

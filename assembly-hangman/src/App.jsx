@@ -1,15 +1,26 @@
 import './App.css'
 import {languages} from './languages'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {clsx} from 'clsx'
+import {getFarewellText} from './utils'
+
 export default function App(){
+
+  // states
   const [word, setWord] = useState("react");
   const [guessWord, setGuessWord] = useState([]);
 
+  //derived values
   const wrongGuessCount = guessWord.filter((letter) => (
     !word.includes(letter)
   )).length;
+  const gameWon = word.split('').filter((letter) => (
+    !guessWord.includes(letter)
+  )).length === 0 ? true : false;
+  const gameLost = wrongGuessCount >= languages.length-1 ? true : false;
+  const isGameOver = gameWon || gameLost ? true : false;
   
+  //rendering repitive elements
   const charElems = word.split('').map((char) => (
     <span>{guessWord.includes(char) ? char.toUpperCase() : ""}</span>
   ))
@@ -23,12 +34,14 @@ export default function App(){
     return (<h2 style={style} className={className}>{language.name}</h2>)
   })
 
+  // updating guessedword state
   function addGuess(letter){
     setGuessWord((prevGuessWord) => (
       prevGuessWord.includes(letter) ? prevGuessWord : [...prevGuessWord, letter]
     ))
   }
 
+  //rendering keyboard components
   const alphabets = "abcdefghijklmnopqrstuvwxyz";
   const buttons = alphabets.split('').map((char) => (
     <button  
@@ -38,28 +51,55 @@ export default function App(){
       {char.toUpperCase()}
     </button>
   ))
+
+  // classname and variable for rendering different messages and styling
+  const gameStatusClass = clsx("game-status",{"won":gameWon, "lost": gameLost, 
+    "wrong-guess":(wrongGuessCount > 0 && wrongGuessCount < languages.length-1)})
+
+  const wrongLanguages = languages.slice(0, wrongGuessCount);
+  const languageArr = wrongLanguages.map((language) => (language.name))
+  const farewellMsg = getFarewellText(languageArr)
   
+  const renderEle =  (isGameOver ? (
+    gameWon ?
+      <>
+        <h2>You Win</h2>
+        <p>Well done 🎉!</p>
+      </>:
+      (gameLost ?
+        <>
+          <h2>Game Over</h2>
+          <p>You lose! Better start learning Assembly 😭</p>
+        </>
+        : null
+      )) 
+    : wrongGuessCount > 0 ? 
+        <h2>"{farewellMsg}"</h2>
+      : null
+    ) 
 
   return(
     <main className='main-container'>
       <header>
         <h1>Assembly: Endgame</h1>
         <p>Guess the word under 8 attempts to keep the programming world safe from Assembly!</p>
+        <section className={gameStatusClass}>
+          {renderEle}
+        </section>
       </header>
-      <section className='game-status'>
-        <h1>You win!</h1>
-        <p>Well done! 🎉</p>
-      </section>
+      
       <section className='language-container'>
         {langElems}
       </section>
       <section className='word-container'>
         {charElems}
       </section>
-      <section className='keyboard-container'>
-        {buttons}
-      </section>
-      <button className='new-game'>New Game</button>
+      <div className='foot-container'>
+          <section className='keyboard-container'>
+            {buttons}
+          </section>
+          {isGameOver && <button className='new-game'>New Game</button>}
+      </div>
     </main>
   )
 }
